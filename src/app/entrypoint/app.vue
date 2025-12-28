@@ -1,8 +1,7 @@
 <template>
-    <h1>HELLO world</h1>
-
-    <div>
-        <NuxtRouteAnnouncer />
-        <NuxtWelcome />
-    </div>
+    <h1>Hello from</h1>
 </template>
+
+<script setup lang="ts">
+    const asdf = {};
+</script>
