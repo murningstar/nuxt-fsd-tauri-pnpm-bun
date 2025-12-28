@@ -8,7 +8,9 @@
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "lint": "eslint --debug && pnpm format",
+        "prod-lint": "eslint --concurrency auto --fix --debug"
     },
     "dependencies": {
         "@nuxt/hints": "1.0.0-alpha.5",
