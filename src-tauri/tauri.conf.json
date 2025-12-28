@@ -7,7 +7,7 @@
         "frontendDist": "../dist",
         "devUrl": "http://localhost:1337",
         "beforeDevCommand": "pnpm dev",
-        "beforeBuildCommand": "pnpm generate"
+        "beforeBuildCommand": "bun install --lockfile-only && bun generate"
     },
     "app": {
         "windows": [
