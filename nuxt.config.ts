@@ -9,6 +9,8 @@ const nuxtConfigBase: NuxtConfig = {
 
     ssr: false, // Disable SSR for Tauri compatibility
 
+    serverDir: './server',
+
     typescript: {
         strict: true,
         typeCheck: true,
@@ -21,6 +23,16 @@ const nuxtConfigBase: NuxtConfig = {
 const nuxtFSDConfig: NuxtConfig = {
     srcDir: './src', // Используем /src, а не /app, т.к. коллизия имён - в FSD тоже есть папка /app
 
+    alias: {
+        '@': '/src',
+        '@app': '/src/app',
+        '@pages': '/src/pages',
+        '@widgets': '/src/widgets',
+        '@features': '/src/features',
+        '@entities': '/src/entities',
+        '@shared': '/src/shared',
+    },
+
     hooks: {
         'app:resolve': app => {
             app.mainComponent = './src/app/entrypoint/app.vue'; // Override the default app.vue location to FSD's app/entrypoint
@@ -28,9 +40,9 @@ const nuxtFSDConfig: NuxtConfig = {
     },
 
     dir: {
-        layouts: 'app/layouts',
-        plugins: 'app/plugins',
-        middleware: 'app/middleware',
+        layouts: '@/app/layouts',
+        plugins: '@/app/plugins',
+        middleware: '@/app/middleware',
     },
 
     /* FSD components auto-imports */
@@ -57,28 +69,6 @@ const nuxtFSDConfig: NuxtConfig = {
                 '@shared': '/src/shared',
             },
         },
-    },
-
-    // alias: {
-    //     '@': '/src',
-    //     '@app': '/src/app',
-    //     '@pages': '/src/pages',
-    //     '@widgets': '/src/widgets',
-    //     '@features': '/src/features',
-    //     '@entities': '/src/entities',
-    //     '@shared': '/src/shared',
-    // },
-};
-
-const nuxtBunConfig: NuxtConfig = {
-    serverDir: './server',
-
-    nitro: {
-        preset: 'bun', // Note: This affects standalone server builds, not Tauri's static output
-    },
-
-    experimental: {
-        asyncContext: true, // Enable experimental async context for Bun compatibility
     },
 };
 
@@ -116,4 +106,18 @@ const nuxtTauriAndViteConfig: NuxtConfig = {
     ignore: ['**/src-tauri/**'], // Prevent watching Tauri files (causes infinite loops)
 };
 
-export default defineNuxtConfig(defu(nuxtConfigBase, nuxtFSDConfig, nuxtTauriAndViteConfig, nuxtBunConfig));
+export default defineNuxtConfig(defu(nuxtConfigBase, nuxtFSDConfig, nuxtTauriAndViteConfig));
+
+/* 
+Bun is not ready to be used in nuxt monorepo - currently it's not possible to use it's API in dev mode. It can only be used as another folder of monorepo.    
+https://claude.ai/public/artifacts/a388de11-5cad-4c06-b332-1a0c13aefa1b
+ */
+// const nuxtBunConfig: NuxtConfig = {
+//     nitro: {
+//         preset: 'bun', // Note: This affects standalone server builds, not Tauri's static output
+//     },
+
+//     experimental: {
+//         asyncContext: true, // Enable experimental async context for Bun compatibility
+//     },
+// };

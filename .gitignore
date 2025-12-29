@@ -22,3 +22,8 @@ logs
 .env
 .env.*
 !.env.example
+
+# Bun's "bun.lock" is generated only on build step. See property `beforeBuildCommand` in `src-tauri/tauri.conf.json`
+# bun.lock
+# Bun is not ready to be used in nuxt monorepo - currently it's not possible to use it's API in dev mode. It can only be used as another folder of monorepo.    
+# https://claude.ai/public/artifacts/a388de11-5cad-4c06-b332-1a0c13aefa1b

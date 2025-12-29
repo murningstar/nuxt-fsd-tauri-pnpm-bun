@@ -1,18 +1,18 @@
 {
     "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-    "productName": "nuxt-fsd-tauri-pnpm-bun",
+    "productName": "nuxt-fsd-tauri-pnpm",
     "version": "0.1.0",
     "identifier": "com.tauri.dev",
     "build": {
         "frontendDist": "../dist",
         "devUrl": "http://localhost:1337",
         "beforeDevCommand": "pnpm dev",
-        "beforeBuildCommand": "bun install --lockfile-only && bun generate"
+        "beforeBuildCommand": "pnpm generate"
     },
     "app": {
         "windows": [
             {
-                "title": "nuxt-fsd-tauri-pnpm-bun",
+                "title": "nuxt-fsd-tauri-pnpm",
                 "width": 800,
                 "height": 600,
                 "resizable": true,
