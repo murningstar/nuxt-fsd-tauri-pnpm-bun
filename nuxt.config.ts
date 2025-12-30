@@ -108,11 +108,11 @@ const nuxtTauriAndViteConfig: NuxtConfig = {
 
 export default defineNuxtConfig(defu(nuxtConfigBase, nuxtFSDConfig, nuxtTauriAndViteConfig));
 
-/* 
-Bun is not ready to be used in nuxt monorepo - currently it's not possible to use it's API in dev mode. It can only be used as another folder of monorepo.    
-https://claude.ai/public/artifacts/a388de11-5cad-4c06-b332-1a0c13aefa1b
- */
 // const nuxtBunConfig: NuxtConfig = {
+/* 
+    Bun is not ready to be used in nuxt monorepo - currently it's not possible to use all of it's APIs in dev mode. It can only be used as another folder of monorepo.    
+    https://claude.ai/public/artifacts/a388de11-5cad-4c06-b332-1a0c13aefa1b
+ */
 //     nitro: {
 //         preset: 'bun', // Note: This affects standalone server builds, not Tauri's static output
 //     },
