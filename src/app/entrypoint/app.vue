@@ -1,7 +1,7 @@
 <template>
-    <rename-me />
+    <ExampleFeature />
 </template>
 
 <script setup lang="ts">
-    import RenameMe from '~/features/rename-me/ui/rename-me.vue';
+    import { ExampleFeature } from '~/features/example-feature';
 </script>

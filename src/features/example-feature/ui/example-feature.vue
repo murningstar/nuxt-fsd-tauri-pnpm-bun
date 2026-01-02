@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
     /* Types are generated after dev server restart (or build run / nuxi prepare) */
-    const _res = await $fetch('/api/rename-me-handler');
+    const _res = await $fetch('/api/example-feature-handler');
 </script>
 
 <style scoped></style>
