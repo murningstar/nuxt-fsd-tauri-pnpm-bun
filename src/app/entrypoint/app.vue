@@ -1,7 +1,7 @@
 <template>
-    <h1>Hello from</h1>
+    <rename-me />
 </template>
 
 <script setup lang="ts">
-    const asdf = {};
+    import RenameMe from '~/features/rename-me/ui/rename-me.vue';
 </script>
