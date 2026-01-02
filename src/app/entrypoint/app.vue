@@ -1,10 +1,7 @@
 <template>
-    <h1>Hello from</h1>
-
-    <my-feature />
+    <rename-me />
 </template>
 
 <script setup lang="ts">
-    import myFeature from '~/features/my-feature/ui/my-feature.vue';
-    const asdf = {};
+    import RenameMe from '~/features/rename-me/ui/rename-me.vue';
 </script>

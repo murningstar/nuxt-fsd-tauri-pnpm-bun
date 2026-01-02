@@ -117,19 +117,23 @@ nuxtConfigParts.push(
 );
 
 {
+    const cwd = import.meta.dirname;
+
     nuxtConfigParts.push({
         experimentalNuxtConfigForServerFSD: {
             nitro: {
                 scanDirs: [
-                    ...globSync('src/features/**/server', { cwd: import.meta.dirname }).map(path => resolve(path)),
-                    ...globSync('src/entities/**/server', { cwd: import.meta.dirname }).map(path => resolve(path)),
+                    ...globSync('src/app/**/server', { cwd }).map(path => resolve(path)),
+                    ...globSync('src/pages/**/server', { cwd }).map(path => resolve(path)),
+                    ...globSync('src/widgets/**/server', { cwd }).map(path => resolve(path)),
+                    ...globSync('src/features/**/server', { cwd }).map(path => resolve(path)),
+                    ...globSync('src/entities/**/server', { cwd }).map(path => resolve(path)),
+                    ...globSync('src/shared/**/server', { cwd }).map(path => resolve(path)),
                 ],
             },
         },
     });
 }
-
-console.log(globSync('src/features/**/server', { cwd: import.meta.dirname }).map(path => resolve(path)));
 
 export default defineNuxtConfig(
     nuxtConfigParts
