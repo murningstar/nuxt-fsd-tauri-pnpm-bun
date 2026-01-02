@@ -1,16 +1,19 @@
 {
     "name": "nuxt-fsd-tauri-pnpm",
     "type": "module",
+    "packageManager": "pnpm@10.26.0",
     "private": true,
     "scripts": {
-        "build": "nuxt build",
+        "preinstall": "npx only-allow pnpm",
+        "postinstall": "nuxt prepare",
         "dev": "nuxt dev",
         "generate": "nuxt generate",
+        "build": "nuxt build",
         "preview": "nuxt preview",
-        "postinstall": "nuxt prepare",
         "format": "prettier --write .",
         "lint": "eslint --debug && pnpm format",
-        "prod-lint": "eslint --concurrency auto --fix --debug"
+        "prod-lint": "eslint --concurrency auto --fix --debug",
+        "prepare": "husky"
     },
     "dependencies": {
         "@nuxt/hints": "1.0.0-alpha.5",
@@ -26,8 +29,18 @@
         "@tauri-apps/cli": "^2.9.6",
         "@types/node": "^25.0.3",
         "eslint": "^9.39.2",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.7",
         "prettier": "3.7.4",
         "typescript": "^5.9.3",
         "vue-tsc": "^3.2.1"
+    },
+    "lint-staged": {
+        "*.{ts,tsx,vue,js,jsx}": [
+            "eslint --fix"
+        ],
+        "*.{ts,tsx,vue,js,jsx,json,md,css,scss,mjs}": [
+            "prettier --write"
+        ]
     }
 }
