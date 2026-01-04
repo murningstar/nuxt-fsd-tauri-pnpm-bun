@@ -2,16 +2,32 @@ import type { NuxtConfig } from 'nuxt/schema';
 import { globSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defu } from 'defu';
+import tailwindcss from '@tailwindcss/vite';
 
-const nuxtConfigParts: { [partName: string]: NuxtConfig }[] = [];
+//#region readme
+/* 
+    - `defu` just merges them back into single NuxtConfig
+    - NuxtConfig is split into named parts just for convenience
+*/
+// #endregion;
 
-nuxtConfigParts.push(
-    {
-        nuxtConfigBase: {
+export default defineNuxtConfig(
+    defu<NuxtConfig, NuxtConfig[]>(
+        {
+            // #region Nuxt, Vite base cfg
+            // Base nuxt configuration - nuxt related, modules, plugins and etc
             compatibilityDate: '2025-07-15',
             devtools: { enabled: true },
 
-            modules: ['@nuxt/eslint', '@nuxt/hints', '@nuxt/image', '@nuxt/ui'],
+            modules: ['@nuxt/eslint', '@nuxt/hints', '@nuxt/image', '@nuxt/ui', '@pinia/nuxt', '@vueuse/nuxt'],
+
+            vite: {
+                plugins: [tailwindcss()],
+            },
+
+            pinia: { storesDirs: [] },
+
+            css: ['./src/app/styles/main.css'],
 
             ssr: false, // Disable SSR for Tauri compatibility
 
@@ -23,64 +39,10 @@ nuxtConfigParts.push(
             },
 
             telemetry: false,
+            // #endregion
         },
-    },
-    {
-        /* FSD architecture (Feature Sliced Design) */
-        nuxtFSDConfig: {
-            srcDir: './src', // Используем /src, а не /app, т.к. коллизия имён - в FSD тоже есть папка /app
-
-            alias: {
-                '@': '/src',
-                '@app': '/src/app',
-                '@pages': '/src/pages',
-                '@widgets': '/src/widgets',
-                '@features': '/src/features',
-                '@entities': '/src/entities',
-                '@shared': '/src/shared',
-            },
-
-            hooks: {
-                'app:resolve': app => {
-                    app.mainComponent = './src/app/entrypoint/app.vue'; // Override the default app.vue location to FSD's app/entrypoint
-                },
-            },
-
-            dir: {
-                layouts: '@/app/layouts',
-                plugins: '@/app/plugins',
-                middleware: '@/app/middleware',
-            },
-
-            /* FSD components auto-imports */
-            components: {
-                dirs: [
-                    {
-                        path: '.',
-                        pattern: '{shared}/**/ui/*/*.vue',
-                        prefix: 'c',
-                        pathPrefix: false,
-                    },
-                ],
-            },
-
-            vite: {
-                resolve: {
-                    alias: {
-                        '@': '/src',
-                        '@app': '/src/app',
-                        '@pages': '/src/pages',
-                        '@widgets': '/src/widgets',
-                        '@features': '/src/features',
-                        '@entities': '/src/entities',
-                        '@shared': '/src/shared',
-                    },
-                },
-            },
-        },
-    },
-    {
-        nuxtTauriAndViteConfig: {
+        {
+            // #region Tauri && Vite cfg
             devServer: {
                 // Enables the development server to be discoverable by other devices when running on iOS physical devices
                 // host: process.env.TAURI_DEV_HOST || '0.0.0.0',
@@ -112,39 +74,78 @@ nuxtConfigParts.push(
             },
 
             ignore: ['**/src-tauri/**'], // Prevent watching Tauri files (causes infinite loops)
+            // #endregion
         },
-    }
-);
+        {
+            // #region Feature Sliced Design
+            // FSD architecture configuration
+            srcDir: './src', // Используем /src, а не /app, т.к. коллизия имён - в FSD тоже есть папка /app
 
-{
-    const cwd = import.meta.dirname;
+            vite: {
+                resolve: {
+                    alias: {
+                        '@': './src',
+                        '@app': './src/app',
+                        '@pages': './src/pages',
+                        '@widgets': './src/widgets',
+                        '@features': './src/features',
+                        '@entities': './src/entities',
+                        '@shared': './src/shared',
+                    },
+                },
+            },
 
-    nuxtConfigParts.push({
-        experimentalNuxtConfigForServerFSD: {
-            nitro: {
-                scanDirs: [
-                    ...globSync('src/app/**/server', { cwd }).map(path => resolve(path)),
-                    ...globSync('src/pages/**/server', { cwd }).map(path => resolve(path)),
-                    ...globSync('src/widgets/**/server', { cwd }).map(path => resolve(path)),
-                    ...globSync('src/features/**/server', { cwd }).map(path => resolve(path)),
-                    ...globSync('src/entities/**/server', { cwd }).map(path => resolve(path)),
-                    ...globSync('src/shared/**/server', { cwd }).map(path => resolve(path)),
+            alias: {
+                '@': './src',
+                '@app': './src/app',
+                '@pages': './src/pages',
+                '@widgets': './src/widgets',
+                '@features': './src/features',
+                '@entities': './src/entities',
+                '@shared': './src/shared',
+            },
+
+            hooks: {
+                'app:resolve': app => {
+                    app.mainComponent = '@/app/entrypoint/app.vue'; // Override the default app.vue location to FSD's app/entrypoint
+                },
+            },
+
+            dir: {
+                layouts: 'app/layouts',
+                plugins: 'app/plugins',
+                middleware: 'app/middleware',
+            },
+
+            /* Auto-imports for components from `/shared` */
+            components: {
+                dirs: [
+                    {
+                        path: '.',
+                        pattern: '{shared}/**/ui/*/*.vue',
+                        prefix: 'c',
+                        pathPrefix: false,
+                    },
                 ],
             },
+            // #endregion
         },
-    });
-}
-
-export default defineNuxtConfig(
-    nuxtConfigParts
-        .map(partObj => {
-            const partName = Object.keys(partObj)[0]!;
-
-            const configPart = partObj[partName]!;
-
-            return configPart;
-        })
-        .reduce((config, configPart) => defu(config, configPart), {})
+        {
+            // #region `/server` as FSD segment
+            // experimental nuxt config for `/server` folder as FSD segment. So there could be a server code directly in entity or feature or whatever.
+            nitro: {
+                scanDirs: [
+                    ...globSync('src/app/**/server', { cwd: import.meta.dirname }).map(path => resolve(path)),
+                    ...globSync('src/pages/**/server', { cwd: import.meta.dirname }).map(path => resolve(path)),
+                    ...globSync('src/widgets/**/server', { cwd: import.meta.dirname }).map(path => resolve(path)),
+                    ...globSync('src/features/**/server', { cwd: import.meta.dirname }).map(path => resolve(path)),
+                    ...globSync('src/entities/**/server', { cwd: import.meta.dirname }).map(path => resolve(path)),
+                    ...globSync('src/shared/**/server', { cwd: import.meta.dirname }).map(path => resolve(path)),
+                ],
+            },
+            // #endregion
+        }
+    )
 );
 
 // const nuxtBunConfig: NuxtConfig = {
