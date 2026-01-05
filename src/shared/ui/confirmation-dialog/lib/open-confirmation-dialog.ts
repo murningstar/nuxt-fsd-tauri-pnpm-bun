@@ -101,8 +101,6 @@ export const openConfirmationDialog = async (args: OpenConfirmationDialogArgs) =
                                     },
                                     {
                                         title: () => args.title,
-                                        // default: () => args.description,
-
                                         ...(args.description ? { default: () => args.description } : {}),
                                         buttons: () => [
                                             h(
