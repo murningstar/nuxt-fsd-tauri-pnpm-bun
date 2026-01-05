@@ -1,8 +1,8 @@
 import type { Component, Raw } from 'vue';
-import { useSettingsStore } from '~/entities/settings/config/settings.store';
+import { usePlatformStore } from '~/entities/platform/infra/platform.store';
 
 export const useConfirmationDialogStore = defineStore('confirmation-dialog-store', () => {
-    const { isNativeMobile } = storeToRefs(useSettingsStore());
+    const { isNativeMobile } = storeToRefs(usePlatformStore());
 
     const _confirmationDialogs = ref<Raw<Component>[]>([]);
     const confirmationDialogs = shallowReadonly(_confirmationDialogs);

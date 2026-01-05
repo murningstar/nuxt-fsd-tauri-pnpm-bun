@@ -1,5 +1,5 @@
 import { kDialog, kDialogButton } from 'konsta/vue';
-import { useSettingsStore } from '~/entities/settings/config/settings.store';
+import { usePlatformStore } from '~/entities/platform/infra/platform.store';
 import { useConfirmationDialogStore } from './confirmation-dialog-store';
 
 export type OpenConfirmationDialogArgs = {
@@ -15,7 +15,7 @@ export type OpenConfirmationDialogArgs = {
 export const openConfirmationDialog = async (args: OpenConfirmationDialogArgs) => {
     const { promise, resolve, reject } = Promise.withResolvers<undefined>();
 
-    const { isNativeMobile } = storeToRefs(useSettingsStore());
+    const { isNativeMobile } = storeToRefs(usePlatformStore());
     const { registerConfirmationDialog, unregisterConfirmationDialog } = useConfirmationDialogStore();
 
     const DEFAULT_CONFIRM_BTN_TEXT = 'Confirm'; // TODO i18n

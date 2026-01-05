@@ -7,12 +7,12 @@
 </template>
 
 <script setup lang="ts">
-    import { useSettingsStore } from '~/entities/settings/config/settings.store';
+    import { usePlatformStore } from '~/entities/platform/infra/platform.store';
     import { openConfirmationDialog } from '~/shared/ui/confirmation-dialog/lib/open-confirmation-dialog';
 
     const { path } = toRefs(useRoute());
 
-    const { isNativeMobile } = storeToRefs(useSettingsStore());
+    const { isNativeMobile } = storeToRefs(usePlatformStore());
 
     const onClick = () => {
         openConfirmationDialog({

@@ -9,7 +9,6 @@
         </template>
     </DefineTemplate>
 
-    <button class="border" @click="__toggleIsNativeMobile">Toggle native mode</button>
     <div>isNativeMobile: {{ isNativeMobile }}</div>
 
     <!-- KonstaUI wrapper for native mobile builds -->
@@ -21,17 +20,18 @@
     <u-app v-else>
         <ReuseTemplate />
     </u-app>
+
+    <pre><code>{{ $device }}</code></pre>
 </template>
 
 <script setup lang="ts">
     import { kApp } from 'konsta/vue';
-    import { useSettingsStore } from '~/entities/settings/config/settings.store';
+    import { usePlatformStore } from '~/entities/platform/infra/platform.store';
     import { createReusableTemplate } from '@vueuse/core';
     import { useConfirmationDialogStore } from '~/shared/ui/confirmation-dialog/lib/confirmation-dialog-store';
 
     const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
-    const { isNativeMobile } = storeToRefs(useSettingsStore());
-    const { __toggleIsNativeMobile } = useSettingsStore();
+    const { isNativeMobile } = storeToRefs(usePlatformStore());
     const { confirmationDialogs } = storeToRefs(useConfirmationDialogStore());
 </script>
