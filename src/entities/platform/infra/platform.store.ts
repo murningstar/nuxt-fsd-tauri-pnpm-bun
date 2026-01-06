@@ -1,23 +1,26 @@
-import { platform as getPlatform, type Platform as NativePlatform } from '@tauri-apps/plugin-os';
+import { platform as getPlatform } from '@tauri-apps/plugin-os';
+import type { CurrentNativePlatform } from '../model';
 
 export const usePlatformStore = defineStore('platform', () => {
-    const currentNativePlatform = ref<NativePlatform | null>(null);
+    const _currentNativePlatform = ref<CurrentNativePlatform>(null);
     const { isMobile, isDesktop } = useDevice();
 
     try {
-        currentNativePlatform.value = getPlatform();
+        _currentNativePlatform.value = getPlatform();
     } catch {
         console.info('App is not in native mode');
     }
 
-    const isNativePlatform = computed<boolean>(() => !!currentNativePlatform.value);
+    const currentNativePlatform = readonly(_currentNativePlatform);
+
+    const isNativePlatform = computed<boolean>(() => !!_currentNativePlatform.value);
 
     const isNativeMobile = computed<boolean>(
-        () => isNativePlatform.value && ['ios', 'android'].includes(currentNativePlatform.value ?? '')
+        () => isNativePlatform.value && ['ios', 'android'].includes(_currentNativePlatform.value ?? '')
     );
 
     const isNativeDesktop = computed<boolean>(
-        () => isNativePlatform.value && ['windows', 'linux', 'macos'].includes(currentNativePlatform.value ?? '')
+        () => isNativePlatform.value && ['windows', 'linux', 'macos'].includes(_currentNativePlatform.value ?? '')
     );
 
     const isWebBrowser = computed<boolean>(() => !isNativePlatform.value);
@@ -30,6 +33,10 @@ export const usePlatformStore = defineStore('platform', () => {
 
     const isAnyDesktop = computed<boolean>(() => isNativeDesktop.value || isWebDesktop.value);
 
+    const __setCurrentNativePlatform = (platform: CurrentNativePlatform) => {
+        _currentNativePlatform.value = platform;
+    };
+
     return {
         currentNativePlatform,
         isNativePlatform,
@@ -40,5 +47,6 @@ export const usePlatformStore = defineStore('platform', () => {
         isWebDesktop,
         isAnyMobile,
         isAnyDesktop,
+        __setCurrentNativePlatform,
     };
 });

@@ -1,5 +1,5 @@
 <template>
-    <div class="m-4 border">
+    <div>
         <h1>Page: `{{ path }}`</h1>
         <b class="block">Button is visible when `isNativeMobile === true`</b>
         <button v-if="isNativeMobile" class="border" @click="onClick">Open confirmation</button>
