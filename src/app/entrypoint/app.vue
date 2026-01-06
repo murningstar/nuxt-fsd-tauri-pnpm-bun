@@ -9,10 +9,8 @@
         </template>
     </DefineTemplate>
 
-    <div>isNativeMobile: {{ isNativeMobile }}</div>
-
     <!-- KonstaUI wrapper for native mobile builds -->
-    <k-app v-if="isNativeMobile" theme="ios">
+    <k-app v-if="isNativeMobile" :theme="_themeProp">
         <ReuseTemplate />
     </k-app>
 
@@ -32,6 +30,17 @@
 
     const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
-    const { isNativeMobile } = storeToRefs(usePlatformStore());
+    const { isNativeMobile, currentNativePlatform } = storeToRefs(usePlatformStore());
     const { confirmationDialogs } = storeToRefs(useConfirmationDialogStore());
+
+    const theme = computed<'ios' | 'material' | null>(() => {
+        if (isNativeMobile.value) {
+            if (currentNativePlatform.value === 'ios') return 'ios';
+            if (currentNativePlatform.value === 'android') return 'material';
+        }
+
+        return null;
+    });
+
+    const _themeProp = computed<'ios' | 'material' | 'parent'>(() => theme.value ?? 'parent');
 </script>

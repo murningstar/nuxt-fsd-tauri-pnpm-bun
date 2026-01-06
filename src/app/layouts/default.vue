@@ -1,10 +1,9 @@
 <template>
     <div>
-        <header>
+        <header class="relative mb-2 flex flex-col gap-2 border px-6 py-4 shadow-xl">
+            <div clas>Header: Default layout</div>
             <div class="flex gap-2">
-                <div>Default layout</div>
-
-                <div class="border inline-block">
+                <div class="inline-block border">
                     <div>We're on the page:</div>
                     <div>
                         Name: <code>{{ $route.name }}</code>
@@ -20,14 +19,14 @@
                     v-for="{ name, path } in router.options.routes"
                     :key="name"
                     :to="path"
-                    class="border px-2 py-0.5 self-start"
+                    class="self-start border px-2 py-0.5"
                 >
                     to {{ name }}
                 </nuxt-link>
             </div>
         </header>
 
-        <main class="border-2 m-4">
+        <main class="m-4 border-2">
             <slot />
         </main>
 

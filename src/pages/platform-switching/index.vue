@@ -3,7 +3,7 @@
         <button
             v-for="{ label, value } in platformOptions"
             :key="label"
-            class="border p-1 m-1"
+            class="m-1 border p-1"
             @click="() => onOptionClick(value)"
         >
             {{ label }}
