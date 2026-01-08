@@ -1,7 +1,11 @@
 <template>
-    <div>
-        <header class="relative mb-2 flex flex-col gap-2 border px-6 py-4 shadow-xl">
-            <div clas>Header: Default layout</div>
+    <div class="flex min-h-screen flex-col bg-white" data-vaul-drawer-wrapper>
+        <header class="relative mb-2 flex flex-col gap-2 px-6 py-4 shadow-xl">
+            <div
+                class="pointer-events-none absolute top-1/2 left-1/2 -translate-1/2 text-5xl font-semibold text-nowrap opacity-15"
+            >
+                Header: Default layout
+            </div>
             <div class="flex gap-2">
                 <div class="inline-block border">
                     <div>We're on the page:</div>
@@ -26,11 +30,11 @@
             </div>
         </header>
 
-        <main class="m-4 border-2">
+        <main class="p-4">
             <slot />
         </main>
 
-        <footer>footer</footer>
+        <footer class="mt-auto border-t">footer</footer>
     </div>
 </template>
 

@@ -1,37 +1,44 @@
 <template>
-    <DefineTemplate>
+    <ReusableTemplateDefinition>
+        <c-superadmin-panel />
+
         <nuxt-layout>
             <nuxt-page />
         </nuxt-layout>
 
-        <template v-for="(ConfirmationDialog, _ix) in confirmationDialogs" :key="_ix">
+        <!-- <template v-for="(ConfirmationDialog, _ix) in confirmationDialogs" :key="_ix">
             <component :is="ConfirmationDialog" />
+        </template> -->
+
+        <template v-for="(SheetModal, _ix) in sheetModals" :key="_ix">
+            <component :is="SheetModal" />
         </template>
-    </DefineTemplate>
+    </ReusableTemplateDefinition>
 
-    <!-- KonstaUI wrapper for native mobile builds -->
-    <k-app v-if="isNativeMobile" :theme="_themeProp">
-        <ReuseTemplate />
-    </k-app>
+    <!-- NuxtUI wrapper for everything -->
+    <u-app>
+        <!-- KonstaUI wrapper for native mobile builds -->
+        <k-app v-if="isNativeMobile" :theme="_themeProp">
+            <ReusableTemplate />
+        </k-app>
 
-    <!-- NuxtUI wrapper for the rest -->
-    <u-app v-else>
-        <ReuseTemplate />
+        <ReusableTemplate v-else />
     </u-app>
-
-    <pre><code>{{ $device }}</code></pre>
 </template>
 
 <script setup lang="ts">
     import { kApp } from 'konsta/vue';
     import { usePlatformStore } from '~/entities/platform/infra/platform.store';
     import { createReusableTemplate } from '@vueuse/core';
-    import { useConfirmationDialogStore } from '~/shared/ui/confirmation-dialog/lib/confirmation-dialog-store';
+    // import { useConfirmationDialogStore } from '~/shared/ui/confirmation-dialog/lib/confirmation-dialog-store';
+    import { CSuperadminPanel } from '~/widgets/superadmin-panel';
+    import { useSheetModalStore } from '~/shared/ui/sheet-modal/lib/use-sheet-modal-store';
 
-    const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
+    const [ReusableTemplateDefinition, ReusableTemplate] = createReusableTemplate();
 
     const { isNativeMobile, currentNativePlatform } = storeToRefs(usePlatformStore());
-    const { confirmationDialogs } = storeToRefs(useConfirmationDialogStore());
+    // const { confirmationDialogs } = storeToRefs(useConfirmationDialogStore());
+    const { sheetModals } = storeToRefs(useSheetModalStore());
 
     const theme = computed<'ios' | 'material' | null>(() => {
         if (isNativeMobile.value) {
