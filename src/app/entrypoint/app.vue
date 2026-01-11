@@ -1,18 +1,12 @@
 <template>
     <ReusableTemplateDefinition>
-        <c-superadmin-panel />
-
         <nuxt-layout>
-            <nuxt-page />
+            <nuxt-page :keepalive="pagesHaveKeepAlive" :transition="pagesHaveTransitions" />
         </nuxt-layout>
 
-        <!-- <template v-for="(ConfirmationDialog, _ix) in confirmationDialogs" :key="_ix">
-            <component :is="ConfirmationDialog" />
-        </template> -->
+        <c-sheet-modals-renderer />
 
-        <template v-for="(SheetModal, _ix) in sheetModals" :key="_ix">
-            <component :is="SheetModal" />
-        </template>
+        <c-superadmin-panel />
     </ReusableTemplateDefinition>
 
     <!-- NuxtUI wrapper for everything -->
@@ -30,15 +24,16 @@
     import { kApp } from 'konsta/vue';
     import { usePlatformStore } from '~/entities/platform/infra/platform.store';
     import { createReusableTemplate } from '@vueuse/core';
-    // import { useConfirmationDialogStore } from '~/shared/ui/confirmation-dialog/lib/confirmation-dialog-store';
     import { CSuperadminPanel } from '~/widgets/superadmin-panel';
-    import { useSheetModalStore } from '~/shared/ui/sheet-modal/lib/use-sheet-modal-store';
+    import { CSheetModalsRenderer } from '~/shared/ui/sheet-modal';
 
     const [ReusableTemplateDefinition, ReusableTemplate] = createReusableTemplate();
 
-    const { isNativeMobile, currentNativePlatform } = storeToRefs(usePlatformStore());
+    const { isNativeMobile, currentNativePlatform, isAnyMobile } = storeToRefs(usePlatformStore());
     // const { confirmationDialogs } = storeToRefs(useConfirmationDialogStore());
-    const { sheetModals } = storeToRefs(useSheetModalStore());
+
+    const pagesHaveKeepAlive = computed<boolean>(() => isAnyMobile.value);
+    const pagesHaveTransitions = computed<boolean>(() => isAnyMobile.value);
 
     const theme = computed<'ios' | 'material' | null>(() => {
         if (isNativeMobile.value) {
