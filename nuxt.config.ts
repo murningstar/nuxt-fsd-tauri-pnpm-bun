@@ -1,8 +1,28 @@
 import type { NuxtConfig } from 'nuxt/schema';
-import { globSync } from 'node:fs';
+import { globSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defu } from 'defu';
 import tailwindcss from '@tailwindcss/vite';
+import { featureFlagsConfig } from './src/entities/feature-flags/config/feature-flags.config';
+
+// #region Generate vite-env.d.ts from feature flags config
+const generateViteEnvDts = () => {
+    const envKeys = Object.values(featureFlagsConfig).map(flag => flag.envKey);
+    const content = `// Auto-generated from feature-flags.config.ts - do not edit manually
+
+interface ImportMetaEnv {
+${envKeys.map(key => `    readonly ${key}?: string;`).join('\n')}
+}
+
+interface ImportMeta {
+    readonly env: ImportMetaEnv;
+}
+`;
+    writeFileSync(resolve(import.meta.dirname, 'src/app/typings/vite-env.d.ts'), content);
+};
+
+generateViteEnvDts();
+// #endregion
 
 //#region readme
 /* 

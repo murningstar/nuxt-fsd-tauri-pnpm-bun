@@ -29,14 +29,20 @@
             description: 'description',
             contentSlot: () => [
                 'some content',
-                h(UButton, {
-                    onClick: () => {
-                        openSheetModal({
-                            contentSlot: () => 'nested sheet',
-                            parentSheetId: id,
-                        });
+                h(
+                    UButton,
+                    {
+                        onClick: () => {
+                            openSheetModal({
+                                contentSlot: () => 'nested sheet',
+                                parentSheetId: id,
+                            });
+                        },
                     },
-                }),
+                    {
+                        default: () => 'click me',
+                    }
+                ),
             ],
         });
     };
