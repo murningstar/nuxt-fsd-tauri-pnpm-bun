@@ -17,7 +17,7 @@ export const useSheetModalStackStore = defineStore('sheet-modal-stack-store', ()
     const allSheetModalStacksConfigs = readonly(_allSheetModalStacksConfigs);
 
     const registerSheetModal = (args: OpenSheetModalArgs) => {
-        const { title, description, parentSheetId, contentSlot } = args;
+        const { title, description, parentSheetId, contentSlot, fullWidthContent } = args;
 
         const id = crypto.randomUUID();
 
@@ -29,6 +29,7 @@ export const useSheetModalStackStore = defineStore('sheet-modal-stack-store', ()
             description,
             parentId: parentSheetId,
             contentSlot,
+            fullWidthContent,
             closingSignal,
         };
 

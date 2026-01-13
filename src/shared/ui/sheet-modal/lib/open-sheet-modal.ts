@@ -6,6 +6,7 @@ export type OpenSheetModalArgs = {
     title?: string;
     description?: string;
     contentSlot: Slot;
+    fullWidthContent?: boolean;
     parentSheetId?: UUID;
 };
 

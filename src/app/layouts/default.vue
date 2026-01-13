@@ -1,5 +1,5 @@
 <template>
-    <div class="flex min-h-screen flex-col bg-white" data-vaul-drawer-wrapper>
+    <div class="flex min-h-screen flex-col" data-vaul-drawer-wrapper>
         <header class="relative mb-2 flex flex-col gap-2 px-6 py-4 shadow-xl">
             <div
                 class="pointer-events-none absolute top-1/2 left-1/2 -translate-1/2 text-5xl font-semibold text-nowrap opacity-15"

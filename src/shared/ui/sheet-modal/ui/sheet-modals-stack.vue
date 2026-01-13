@@ -5,12 +5,13 @@
         :direction="sheetDirection"
         :handle="hasHandle"
         :ui="{
-            container: 'border-l border-green-400',
-            body: 'border-l border-blue-400',
-            content: 'border-l border-red-400',
+            // container: 'border-l border-green-400',
+            // body: 'border-l border-blue-400', // fullWidth: false
+            // content: 'border-l border-red-400', // external drawer styling (fullWidth: true)
+            content: 'max-w-3xl mx-auto min-h-72 min-w-96 px-8',
+            handle: 'mb-4',
         }"
         should-scale-background
-        class="min-h-72 min-w-96"
         @update:open="onOpenUpdate"
         @animation-end="onAnimationEnd"
     >
@@ -25,10 +26,10 @@
             {{ config.description }}
         </template>
 
-        <template v-if="hasEitherTitleOrDescription" #body>
+        <template v-if="config.fullWidthContent" #content>
             <component :is="config.contentSlot" />
         </template>
-        <template v-else #content>
+        <template v-else #body>
             <component :is="config.contentSlot" />
         </template>
 
@@ -64,8 +65,6 @@
     const hasHandle = computed<boolean>(() => !isAnyDesktop.value);
 
     const hasDescriptionWithoutTitle = computed<boolean>(() => !config.title && !!config.description);
-
-    const hasEitherTitleOrDescription = computed<boolean>(() => !!config.title || !!config.description);
 
     function open() {
         isOpen.value = true;

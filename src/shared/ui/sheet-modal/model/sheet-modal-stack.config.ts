@@ -12,6 +12,7 @@ export type SheetModalStackConfig = {
     title?: string;
     description?: string;
     contentSlot: Slot;
+    fullWidthContent?: boolean;
     /* Прокидывать child в модалку необходимо, чтобы UDrawer находил inject-контекст родительской модалки при использовании `nested`.
     Иначе nested работать не будет. */
     childConfig?: SheetModalStackConfig;

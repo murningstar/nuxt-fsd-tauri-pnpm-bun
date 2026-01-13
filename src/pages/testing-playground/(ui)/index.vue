@@ -5,6 +5,7 @@
             <div>Opened count: {{ allSheetModalStacksConfigs.size }} {{ sheetModalStacksConfigs.size }}</div>
             <u-button @click="onClickOpenSheetModal"> test sheet modal </u-button>
             <u-button @click="onClickOpenSheetModal2"> test sheet modal 2 </u-button>
+            <u-button @click="onClickOpenSheetModal3"> test sheet modal 3 </u-button>
         </c-card>
     </div>
 </template>
@@ -14,6 +15,8 @@
     import { CCard } from '~/shared/ui/card/ui';
     import { openSheetModal } from '~/shared/ui/sheet-modal/lib/open-sheet-modal';
     import { useSheetModalStackStore } from '~/shared/ui/sheet-modal/lib/use-sheet-modal-stack.store';
+
+    import { loremIpsum } from '../(mocks)/loremipsum';
 
     const { sheetModalStacksConfigs, allSheetModalStacksConfigs } = storeToRefs(useSheetModalStackStore());
 
@@ -44,6 +47,12 @@
                     }
                 ),
             ],
+        });
+    };
+
+    const onClickOpenSheetModal3 = () => {
+        openSheetModal({
+            contentSlot: () => loremIpsum,
         });
     };
 </script>
